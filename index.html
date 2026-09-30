@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MST Visualizer – Kruskal vs Prim</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Minimum Spanning Tree <span>Side-by-Side Visualizer</span></h1>
+    <p>Draw one graph and watch <b>Kruskal</b> and <b>Prim</b> build the tree step by step.</p>
+  </header>
+
+  <section class="toolbar">
+    <div class="group" id="tools">
+      <button data-tool="node" class="active">● Add node</button>
+      <button data-tool="edge">╱ Add edge</button>
+      <button data-tool="move">✥ Move</button>
+      <button data-tool="erase">✕ Erase</button>
+    </div>
+    <div class="group">
+      <button id="sample">Sample graph</button>
+      <button id="random">Random graph</button>
+      <button id="clear">Clear</button>
+    </div>
+    <div class="group">
+      <button id="reset" title="Back to start">⏮</button>
+      <button id="prev" title="Step back">◀</button>
+      <button id="play" class="primary">▶ Play</button>
+      <button id="next" title="Step forward">▶|</button>
+      <label class="speed">Speed <input type="range" id="speed" min="1" max="10" value="5"></label>
+    </div>
+  </section>
+
+  <p id="hint" class="hint"></p>
+
+  <main>
+    <article class="card">
+      <h2>Kruskal's algorithm <small>sort all edges, skip any that make a cycle</small></h2>
+      <svg id="svgK" viewBox="0 0 600 400"></svg>
+      <div class="stat" id="statK"></div>
+      <ol class="log" id="logK"></ol>
+    </article>
+
+    <article class="card">
+      <h2>Prim's algorithm <small>grow one tree from node A, always take the cheapest edge out</small></h2>
+      <svg id="svgP" viewBox="0 0 600 400"></svg>
+      <div class="stat" id="statP"></div>
+      <ol class="log" id="logP"></ol>
+    </article>
+  </main>
+
+  <div id="summary" class="summary"></div>
+
+  <section class="legend">
+    <span><i class="k acc"></i> in the tree</span>
+    <span><i class="k rej"></i> rejected (cycle)</span>
+    <span><i class="k cur"></i> current step</span>
+    <span><i class="k node"></i> node in tree</span>
+  </section>
+
+  <section class="compare">
+    <table>
+      <tr><th></th><th>Kruskal</th><th>Prim</th></tr>
+      <tr><td>Idea</td><td>Edge-based, grows a forest</td><td>Vertex-based, grows one tree</td></tr>
+      <tr><td>Needs</td><td>Sorted edges + union-find</td><td>Priority queue / min-edge search</td></tr>
+      <tr><td>Time</td><td>O(E log E)</td><td>O(E log V) with a heap</td></tr>
+      <tr><td>Best for</td><td>Sparse graphs</td><td>Dense graphs</td></tr>
+      <tr><td>Disconnected graph</td><td>Gives a spanning forest</td><td>Covers only the start node's component</td></tr>
+    </table>
+  </section>
+
+
+  <!-- Small floating chatbot -->
+  <button id="chatbotToggle" class="chatbot-toggle" aria-label="Open chatbot" title="Ask about MST">
+    🤖
+  </button>
+
+  <section id="chatbot" class="chatbot" aria-label="MST chatbot">
+    <div class="chatbot-head">
+      <div><strong>MST Assistant</strong><small>Ask me about Kruskal or Prim</small></div>
+      <button id="chatbotClose" class="chatbot-close" aria-label="Close chatbot">×</button>
+    </div>
+    <div id="chatMessages" class="chat-messages">
+      <div class="chat-msg bot">Hi! 👋 I can explain MST, Kruskal, Prim, time complexity, and how to use this visualizer.</div>
+    </div>
+    <div class="chat-quick">
+      <button data-question="What is MST?">What is MST?</button>
+      <button data-question="Explain Kruskal">Kruskal</button>
+      <button data-question="Explain Prim">Prim</button>
+    </div>
+    <form id="chatForm" class="chat-input">
+      <input id="chatInput" type="text" placeholder="Ask a question..." autocomplete="off">
+      <button type="submit">➤</button>
+    </form>
+  </section>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
